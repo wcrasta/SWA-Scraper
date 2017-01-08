@@ -3,9 +3,9 @@
 ![Terminal](http://i.imgur.com/7hiOKJC.png)
 ![Text](http://i.imgur.com/sFksFBC.png)
 
-Inspired by [https://github.com/ezekg/swa-dashboard](ezekg's swa-dashboard), I created a command line tool that scrapes Southwest Airlines' website and displays the current lowest price of airplane tickets. When the current lowest price gets under some threshold that you specify, a text message will be sent to you.
+Inspired by [ezekg's swa-dashboard](https://github.com/ezekg/swa-dashboard), I created a command line tool that scrapes Southwest Airlines' website and displays the current lowest price of airplane tickets. When the current lowest price gets under some threshold that you specify, a text message will be sent to you.
 
-While ezekg's tool was coded in Node, I wanted to use Python + Selenium.
+While ezekg's tool was coded in Node, I wanted to use Python + Selenium for a learning experience.
 
 ## Use for this program
 
@@ -20,7 +20,7 @@ Airlines often change their prices on random days/times. By using this program, 
 5. Edit app.py with your twilio details.
 
 ## Usage
-Scrapes the Southwest website according to the interval you set. When the price goes under a certain amount, you will be notified via text message.
+Scrapes the Southwest website according to the interval you set. For best results when using this program, I recommend setting the interval between 2-3 hours. A more frequent interval than that might be excessive. When the price goes under a certain amount, you will be notified via text message.
 
 `--one-way # Optional. By default, a round trip is assumed.`
 
@@ -39,10 +39,11 @@ Scrapes the Southwest website according to the interval you set. When the price 
 `--interval [-i] # How often to scrape Southwest's website (in minutes)`
 
 Sample commands:
+Note: Error checking is non-existent, so make sure to enter the commands properly as specified below.
 
 `$ python app.py --from HOU --to MDW --departure-date 05/12 --return-date 05/14 --passengers 2 --desired-total 215 --interval 30`
 
-`$ python app.py --one-way  --from HOU --to MDW --departure-date 05/12 --return-date 05/14 --passengers 2 --desired-total 215 --interval 30`
+`$ python app.py --one-way  --from HOU --to MDW --departure-date 05/12 --passengers 2 --desired-total 215 --interval 30`
 
 ## Improvements/Possible Added Features
 
