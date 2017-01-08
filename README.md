@@ -20,16 +20,25 @@ Airlines often change their prices on random days/times. By using this program, 
 Scrapes the Southwest website according to the interval you set. When the price goes under a certain amount, you will be notified via text message.
 
 `--one-way # Optional. By default, a round trip is assumed.`
+
 `--from [-f] # The airport to depart from.`
+
 `--to [-t] # The airport to arrive in.`
+
 `--departure-date [-dd] # Date to leave.`
+
 `--return-date [-rd] # Optional. Date to return.`
+
 `--passengers [-p] # Number of passengers.`
-`--desired-total [-dt] # The total trip for one person should be under this amount (in dollars). `
+
+`--desired-total [-dt] # The total fare for one person should be under this amount (in dollars). `
+
 `--interval [-i] # How often to scrape Southwest's website (in minutes)`
 
 Sample commands:
+
 `--from HOU --to MDW --departure-date 05/12 --return-date 05/14 --passengers 2 --desired-total 215 --interval 30`
+
 `--one-way  --from HOU --to MDW --departure-date 05/12 --return-date 05/14 --passengers 2 --desired-total 215 --interval 30`
 
 ## Improvements/Possible Added Features
@@ -51,4 +60,5 @@ If you don't know how to implement something, but do have an idea that you would
 ## Credits
 
 Author: Warren Crasta (warrencrasta@gmail.com)
+
 ezekg -- For the idea.
