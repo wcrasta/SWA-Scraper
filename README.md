@@ -37,9 +37,9 @@ Scrapes the Southwest website according to the interval you set. When the price 
 
 Sample commands:
 
-`--from HOU --to MDW --departure-date 05/12 --return-date 05/14 --passengers 2 --desired-total 215 --interval 30`
+`$ python app.py --from HOU --to MDW --departure-date 05/12 --return-date 05/14 --passengers 2 --desired-total 215 --interval 30`
 
-`--one-way  --from HOU --to MDW --departure-date 05/12 --return-date 05/14 --passengers 2 --desired-total 215 --interval 30`
+`$ python app.py --one-way  --from HOU --to MDW --departure-date 05/12 --return-date 05/14 --passengers 2 --desired-total 215 --interval 30`
 
 ## Improvements/Possible Added Features
 
