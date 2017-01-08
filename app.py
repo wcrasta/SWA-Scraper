@@ -37,8 +37,10 @@ def main(argv):
 
 def scrape(argsDict):
     while True:
+        # PhantomJS is headless, so it doesn't open up a browser.
         browser = webdriver.PhantomJS()
         browser.get('https://www.southwest.com/')
+        # Assumed to be round trip by default.
         oneWayBool = False
         if '--one-way' in argsDict:
             if argsDict['--one-way'] == '--one-way':
@@ -68,6 +70,7 @@ def scrape(argsDict):
         outboundArray = []
         returnArray = []
 
+        # Webdriver might be too fast. Tell it to slow down.
         wait = WebDriverWait(browser, 120)
         wait.until(EC.element_to_be_clickable((By.ID, 'faresOutbound')))
 
@@ -92,6 +95,7 @@ def scrape(argsDict):
             realTotal = lowestOutboundFare
             print('Current Lowest Outbound Fare: $' + str(lowestOutboundFare) + '.')
 
+        # Found a good deal. Send a text via Twilio and then stop running.
         if realTotal < int(argsDict['--desired-total']):
             print('Found a deal. Desired total: $' + argsDict['--desired-total'] + '. Current Total: $' + str(realTotal) + '.')
             client = TwilioRestClient(account_sid, auth_token)
@@ -100,6 +104,7 @@ def scrape(argsDict):
                                              body='Found a deal. Desired total: $' + argsDict['--desired-total'] + '. Current Total: $' + str(realTotal)+ '.')
             print('Text message sent!')
             sys.exit()
+        # Keep scraping according to the interval the user specified.
         time.sleep(int(argsDict['--interval']) * 60)
 
 main(sys.argv[1:])
