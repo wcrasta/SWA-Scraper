@@ -5,6 +5,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from twilio.rest import TwilioRestClient
+import smtplib
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
 
 # Change the four following variables appropriately.
 # account_sid and auth_token can be found at https://www.twilio.com/console.
@@ -32,6 +35,10 @@ def main(argv):
         elif argv[arg] == '--desired-total':
             argsDict[argv[arg]] = argv[arg + 1]
         elif argv[arg] == '--interval':
+            argsDict[argv[arg]] = argv[arg + 1]
+        elif argv[arg] == '--email':        
+            argsDict[argv[arg]] = argv[arg + 1]     
+        elif argv[arg] == '--password':     
             argsDict[argv[arg]] = argv[arg + 1]
     scrape(argsDict)
 
@@ -95,15 +102,44 @@ def scrape(argsDict):
             realTotal = lowestOutboundFare
             print('Current Lowest Outbound Fare: $' + str(lowestOutboundFare) + '.')
 
-        # Found a good deal. Send a text via Twilio and then stop running.
+        # Found a good deal. 
         if realTotal < int(argsDict['--desired-total']):
+            # Send a text via Twilio and then stop running.     
             print('Found a deal. Desired total: $' + argsDict['--desired-total'] + '. Current Total: $' + str(realTotal) + '.')
             client = TwilioRestClient(account_sid, auth_token)
 
             message = client.messages.create(to=toNumber, from_=fromNumber,
                                              body='Found a deal. Desired total: $' + argsDict['--desired-total'] + '. Current Total: $' + str(realTotal)+ '.')
             print('Text message sent!')
+
+            # Send email and then stop running. Requires turning on access to less secure apps to the sending gmail account     
+            # See here : https://www.google.com/settings/security/lesssecureapps        
+            if '--email' in argsDict and '--password' in argsDict:      
+                fromaddr = argsDict['--email']      
+                password = argsDict['--password']       
+                toaddr = argsDict['--email']        
+                msg = MIMEMultipart()       
+                msg['From'] = fromaddr      
+                msg['To'] = toaddr      
+                msg['Subject'] = "Found Flight Deal!"       
+                desired_total = argsDict['--desired-total']     
+                body = 'Found a deal. Desired total: $' + desired_total + '. Current Total: $' + str(realTotal) + '.'       
+                msg.attach(MIMEText(body, 'plain'))     
+                        
+                server = smtplib.SMTP('smtp.gmail.com', 587)        
+                server.starttls()       
+                server.login(fromaddr, password)        
+                text = msg.as_string()      
+                server.sendmail(fromaddr, toaddr, text)     
+                server.quit()       
+        
+                print('Email sent!')        
+            else:       
+                print('Email and/or password not entered.Please check if email is preceded by --email and password by --password.')
             sys.exit()
+
+
+
         # Keep scraping according to the interval the user specified.
         time.sleep(int(argsDict['--interval']) * 60)
 
