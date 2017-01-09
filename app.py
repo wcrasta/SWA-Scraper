@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from twilio.rest import TwilioRestClient
+from datetime import datetime
 
 # Change the four following variables appropriately.
 # account_sid and auth_token can be found at https://www.twilio.com/console.
@@ -16,6 +17,8 @@ toNumber = "+1123456789"
 def main(argv):
     # Get the command line arguments.
     argsDict = {}
+    # If no interval was specified, assume a default interval of 3 hours.
+    argsDict['--interval'] = '180'
     for arg in range(len(argv)):
         if argv[arg] == '--one-way':
             argsDict[argv[arg]] = argv[arg]
@@ -89,21 +92,22 @@ def scrape(argsDict):
                 returnArray.append(int(realprice))
             lowestReturnFare = min(returnArray)
             realTotal = lowestOutboundFare + lowestReturnFare
-            print('Current Lowest Outbound Fare: $' + str(lowestOutboundFare) + '.')
-            print('Current Lowest Return Fare: $' + str(lowestReturnFare) + '.')
+            print('[' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '] Current Lowest Outbound Fare: $' + str(lowestOutboundFare) + '.')
+            print('[' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '] Current Lowest Return Fare: $' + str(lowestReturnFare) + '.')
         else:
             realTotal = lowestOutboundFare
-            print('Current Lowest Outbound Fare: $' + str(lowestOutboundFare) + '.')
+            print('[' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '] Current Lowest Outbound Fare: $' + str(lowestOutboundFare) + '.')
 
         # Found a good deal. Send a text via Twilio and then stop running.
         if realTotal < int(argsDict['--desired-total']):
-            print('Found a deal. Desired total: $' + argsDict['--desired-total'] + '. Current Total: $' + str(realTotal) + '.')
+            print('[' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '] Found a deal. Desired total: $' + argsDict['--desired-total'] + '. Current Total: $' + str(realTotal) + '.')
             client = TwilioRestClient(account_sid, auth_token)
 
             message = client.messages.create(to=toNumber, from_=fromNumber,
-                                             body='Found a deal. Desired total: $' + argsDict['--desired-total'] + '. Current Total: $' + str(realTotal)+ '.')
-            print('Text message sent!')
+                                             body='[' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '] Found a deal. Desired total: $' + argsDict['--desired-total'] + '. Current Total: $' + str(realTotal)+ '.')
+            print('[' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '] Text message sent!')
             sys.exit()
+        print('[' + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + '] Couldn\'t find a deal under the amount you specified. Trying again to find cheaper prices...')
         # Keep scraping according to the interval the user specified.
         time.sleep(int(argsDict['--interval']) * 60)
 
