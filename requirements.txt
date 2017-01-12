@@ -1,3 +1,4 @@
+click==6.7
 httplib2==0.9.2
 PySocks==1.6.5
 pytz==2016.10
