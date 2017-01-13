@@ -2,3 +2,4 @@
 myenv/
 ghostdriver.log
 details.txt
+__pycache__/
