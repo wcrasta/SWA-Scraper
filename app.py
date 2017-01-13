@@ -1,4 +1,5 @@
 from selenium import webdriver
+import configparser
 import sys
 import time
 from selenium.webdriver.support.ui import WebDriverWait
@@ -7,12 +8,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from twilio.rest import TwilioRestClient
 from datetime import datetime
 
-# Change the four following variables appropriately.
-# account_sid and auth_token can be found at https://www.twilio.com/console.
-account_sid = "ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-auth_token = "YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY"
-fromNumber = "+1123456789"
-toNumber = "+1123456789"
+config = configparser.ConfigParser()
+config.read('config.ini')
+account_sid = config['twilio']['account_sid']
+auth_token = config['twilio']['auth_token']
+fromNumber = config['twilio']['fromNumber']
+toNumber = config['twilio']['toNumber']
 
 def main(argv):
     # Get the command line arguments.
