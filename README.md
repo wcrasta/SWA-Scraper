@@ -18,7 +18,7 @@ Airlines often change their prices on random days/times. By using this program, 
 2. Make sure you have Python (code was tested for 3.X, might work with 2.X) and pip. Install required modules by `pip install -r requirements.txt`
 3. Download [PhantomJS](http://phantomjs.org/download.html) and put phantomjs.exe in your Scripts folder (Windows) or /usr/bin folder (Mac/Linux).
 4. Register for a free account on https://www.twilio.com and get a phone number.
-5. Edit app.py with your twilio details.
+5. Edit config.ini with your twilio details.
 
 ## Usage
 Scrapes the Southwest website according to the interval you set. For best results when using this program, I recommend setting the interval between 2-3 hours. A more frequent interval than that might be excessive. When the price goes under a certain amount, you will be notified via text message.

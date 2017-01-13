@@ -8,12 +8,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from twilio.rest import TwilioRestClient
 from datetime import datetime
 
-config = configparser.SafeConfigParser()
+config = configparser.ConfigParser()
 config.read('config.ini')
-account_sid = config.get('twilio', 'account_sid')
-auth_token = config.get('twilio', 'auth_token')
-fromNumber = config.get('twilio', 'fromNumber')
-toNumber = config.get('twilio', 'toNumber')
+account_sid = config['twilio']['account_sid']
+auth_token = config['twilio']['auth_token']
+fromNumber = config['twilio']['fromNumber']
+toNumber = config['twilio']['toNumber']
 
 def main(argv):
     # Get the command line arguments.
