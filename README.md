@@ -41,8 +41,6 @@ Scrapes the Southwest website according to the interval you set. For best result
 
 **Sample commands:**
 
-**NOTE:** Error checking is non-existent, so make sure to enter the commands properly as specified below.
-
 `$ python app.py --from HOU --to MDW --departure-date 05/12 --return-date 05/14 --passengers 2 --desired-total 215 --interval 30`
 
 `$ python app.py --one-way  --from HOU --to MDW --departure-date 05/12 --passengers 2 --desired-total 215 --interval 30`
