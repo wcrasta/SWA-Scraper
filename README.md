@@ -43,7 +43,8 @@ For more information on the available command line arguments use the following c
 `python app.py --help`
 
 Sample commands:
-Note: Error checking is non-existent, so make sure to enter the commands properly as specified below.
+
+**NOTE:** Error checking is non-existent, so make sure to enter the commands properly as specified below.
 
 `$ python app.py --depart HOU --arrive MDW --departure-date 05/12 --return-date 05/14 --passengers 2 --desired-total 215 --interval 30`
 
