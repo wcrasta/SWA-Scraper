@@ -1,5 +1,5 @@
+import argparse
 import configparser
-import optparse
 import sys
 import time
 from datetime import datetime
@@ -9,88 +9,80 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from twilio.rest import TwilioRestClient
 
-config = configparser.ConfigParser()
-config.read('config.ini')
-account_sid = config['twilio']['account_sid']
-auth_token = config['twilio']['auth_token']
-from_number = config['twilio']['from_number']
-to_number = config['twilio']['to_number']
+CONFIG = configparser.ConfigParser()
+CONFIG.read('config.ini')
+ACCOUNT_SID = CONFIG['twilio']['account_sid']
+AUTH_TOKEN = CONFIG['twilio']['auth_token']
+FROM_NUMBER = CONFIG['twilio']['from_number']
+TO_NUMBER = CONFIG['twilio']['to_number']
 
 def main():
     """
     Perform a search on southwest.com for the given flight parameters.
     """
-    options = parse_options()
-    scrape(options)
+    args = parse_args()
+    scrape(args)
 
-def parse_options():
+def parse_args():
     """
     Parse the command line for search parameters.
     """
-    usage = ""
-    parser = optparse.OptionParser(usage=usage)
+    parser = argparse.ArgumentParser(description='Process command line arguments')
 
-    parser.add_option(
+    parser.add_argument(
         "--one-way",
         action="store_true",
-        default=False,
         help="If present, the search will be limited to one-way tickets.")
 
-    parser.add_option(
-        "--from",
-        action="store",
-        type="string",
-        dest="depart",
+    parser.add_argument(
+        "--depart",
+        "-d",
+        type=str,
         help="Origin airport code.")
 
-    parser.add_option(
-        "--to",
-        action="store",
-        type="string",
-        dest="arrive",
+    parser.add_argument(
+        "--arrive",
+        "-a",
+        type=str,
         help="Destination airport code.")
 
-    parser.add_option(
+    parser.add_argument(
         "--departure-date",
-        action="store",
-        type="string",
-        dest="departure_date",
+        "-dd",
+        type=str,
         help="Date of departure flight.")
 
-    parser.add_option(
+    parser.add_argument(
         "--return-date",
-        action="store",
-        type="string",
-        dest="return_date",
+        "-rd",
+        type=str,
         help="Date of return flight.")
 
-    parser.add_option(
+    parser.add_argument(
         "--passengers",
+        "-p",
         action="store",
-        type="string",
-        dest="passengers",
+        type=str,
         help="Number of passengers.")
 
-    parser.add_option(
+    parser.add_argument(
         "--desired-total",
-        action="store",
-        type="string",
-        dest="desired_total",
+        "-dt",
+        type=str,
         help="Ceiling on the total cost of flights.")
 
-    parser.add_option(
+    parser.add_argument(
         "--interval",
-        action="store",
-        type="string",
+        "-i",
+        type=str,
         default=180,
-        dest="interval",
         help="Refresh time period.")
 
-    parsed_args = parser.parse_args()
+    args = parser.parse_args()
 
-    return parsed_args[0]
+    return args
 
-def scrape(options):
+def scrape(args):
     """
     Run scraper on Southwest.com.
     If we find a flight that meets our search parameters, send an SMS message.
@@ -100,38 +92,38 @@ def scrape(options):
         browser = webdriver.PhantomJS()
         browser.get("https://www.southwest.com/")
 
-        if options.one_way:
-            # Set one way trip.
+        if args.one_way:
+            # Set one way trip with click event.
             one_way_elem = browser.find_element_by_id("trip-type-one-way")
             one_way_elem.click()
 
         # Set the departing airport.
         depart_airport = browser.find_element_by_id("air-city-departure")
-        depart_airport.send_keys(options.depart)
+        depart_airport.send_keys(args.depart)
 
         # Set the arrival airport.
         arrive_airport = browser.find_element_by_id("air-city-arrival")
-        arrive_airport.send_keys(options.arrive)
+        arrive_airport.send_keys(args.arrive)
 
         # Set departure date.
         depart_date = browser.find_element_by_id("air-date-departure")
         depart_date.clear()
-        depart_date.send_keys(options.departure_date)
+        depart_date.send_keys(args.departure_date)
 
-        if not options.one_way:
+        if not args.one_way:
             # Set return date.
             return_date = browser.find_element_by_id("air-date-return")
             return_date.clear()
-            return_date.send_keys(options.return_date)
+            return_date.send_keys(args.return_date)
 
-        # Clear tbe readonly attribute from the element.
+        # Clear the readonly attribute from the element.
         passengers = browser.find_element_by_id("air-pax-count-adults")
         browser.execute_script("arguments[0].removeAttribute('readonly', 0);", passengers)
         passengers.click()
         passengers.clear()
-        
+
         # Set passenger count.
-        passengers.send_keys(options.passengers)
+        passengers.send_keys(args.passengers)
         passengers.click()
         search = browser.find_element_by_id("jb-booking-form-submit-button")
         search.click()
@@ -152,7 +144,7 @@ def scrape(options):
 
         lowest_outbound_fare = min(outbound_array)
 
-        if not options.one_way:
+        if not args.one_way:
             return_fares = browser.find_element_by_id("faresReturn")
             return_prices = return_fares.find_elements_by_class_name("product_price")
 
@@ -178,19 +170,18 @@ def scrape(options):
                 str(lowest_outbound_fare)))
 
         # Found a good deal. Send a text via Twilio and then stop running.
-        if real_total <= int(options.desired_total):
+        if real_total <= int(args.desired_total):
             print("[%s] Found a deal. Desired total: $%s. Current Total: $%s." % (
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                options.desired_total, str(real_total)))
+                args.desired_total, str(real_total)))
 
-            client = TwilioRestClient(account_sid, auth_token)
-
+            client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
             client.messages.create(
-                to=to_number,
-                from_=from_number,
+                to=TO_NUMBER,
+                from_=FROM_NUMBER,
                 body="[%s] Found a deal. Desired total: $%s. Current Total: $%s" % (
                     datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    options.desired_total,
+                    args.desired_total,
                     str(real_total)))
 
             print(
@@ -207,7 +198,7 @@ def scrape(options):
         )
 
         # Keep scraping according to the interval the user specified.
-        time.sleep(int(options.interval) * 60)
+        time.sleep(int(args.interval) * 60)
 
 if __name__ == "__main__":
     main()

@@ -1,8 +1,6 @@
 # SWA-Scraper
 
-![Terminal1](http://i.imgur.com/mmBcNf5.png)
-![Text](http://i.imgur.com/4U6F8hN.png)
-![Terminal2](http://i.imgur.com/nYumGWO.png)
+**Screenshots**: http://imgur.com/a/k8JnL
 
 Inspired by [ezekg's swa-dashboard](https://github.com/ezekg/swa-dashboard), I created a command line tool that scrapes Southwest Airlines' website and displays the current lowest price of airplane tickets. When the current lowest price gets under some threshold that you specify, a text message will be sent to you.
 
@@ -21,29 +19,35 @@ Airlines often change their prices on random days/times. By using this program, 
 5. Edit config.ini with your twilio details.
 
 ## Usage
+
 Scrapes the Southwest website according to the interval you set. For best results when using this program, I recommend setting the interval between 2-3 hours. A more frequent interval than that might be excessive. When the price goes under a certain amount, you will be notified via text message.
 
 `--one-way # Optional. By default, a round trip is assumed.`
 
-`--from [airport code] # The airport to depart from.`
+`--depart, -d [airport code] # The airport to depart from.`
 
-`--to [airport code] # The airport to arrive in.`
+`--arrive, -a [airport code] # The airport to arrive in.`
 
-`--departure-date [date] # Date to leave.`
+`--departure-date, -dd [date] # Date to leave.`
 
-`--return-date [date] # Optional. Date to return.`
+`--return-date, -rd [date] # Optional. Date to return.`
 
-`--passengers [adults] # Number of passengers.`
+`--passengers, -p [adults] # Number of passengers.`
 
-`--desired-total [dollars] # The total fare for one person should be under this amount (in dollars). `
+`--desired-total, -dt [dollars] # The total fare for one person should be under this amount (in dollars).`
 
-`--interval [minutes] # Optional. How often to scrape Southwest's website (in minutes). Default value = 3 hours.`
+`--interval, -i [minutes] # Optional. How often to scrape Southwest's website (in minutes). Default value = 3 hours.`
 
-**Sample commands:**
+For more information on the available command line arguments use the following command.
 
-`$ python app.py --from HOU --to MDW --departure-date 05/12 --return-date 05/14 --passengers 2 --desired-total 215 --interval 30`
+`python app.py --help`
 
-`$ python app.py --one-way  --from HOU --to MDW --departure-date 05/12 --passengers 2 --desired-total 215 --interval 30`
+Sample commands:
+Note: Error checking is non-existent, so make sure to enter the commands properly as specified below.
+
+`$ python app.py --depart HOU --arrive MDW --departure-date 05/12 --return-date 05/14 --passengers 2 --desired-total 215 --interval 30`
+
+`$ python app.py --one-way  --depart HOU --arrive MDW --departure-date 05/12 --passengers 2 --desired-total 215 --interval 30`
 
 ## Improvements/Possible Added Features
 
