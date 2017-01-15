@@ -1,9 +1,7 @@
+import argparse
 import configparser
-import optparse
 import sys
 import time
-import argparse
-
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -95,7 +93,7 @@ def scrape(args):
         browser.get("https://www.southwest.com/")
 
         if args.one_way:
-            # Set one way trip with click event
+            # Set one way trip with click event.
             one_way_elem = browser.find_element_by_id("trip-type-one-way")
             one_way_elem.click()
 
@@ -113,18 +111,18 @@ def scrape(args):
         depart_date.send_keys(args.departure_date)
 
         if not args.one_way:
-            # Set return date
+            # Set return date.
             return_date = browser.find_element_by_id("air-date-return")
             return_date.clear()
             return_date.send_keys(args.return_date)
 
-        # Clear tbe readonly attribute from the element.
+        # Clear the readonly attribute from the element.
         passengers = browser.find_element_by_id("air-pax-count-adults")
         browser.execute_script("arguments[0].removeAttribute('readonly', 0);", passengers)
         passengers.click()
         passengers.clear()
 
-        # Set passenger count
+        # Set passenger count.
         passengers.send_keys(args.passengers)
         passengers.click()
         search = browser.find_element_by_id("jb-booking-form-submit-button")
@@ -172,13 +170,12 @@ def scrape(args):
                 str(lowest_outbound_fare)))
 
         # Found a good deal. Send a text via Twilio and then stop running.
-        if real_total < int(args.desired_total):
+        if real_total <= int(args.desired_total):
             print("[%s] Found a deal. Desired total: $%s. Current Total: $%s." % (
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 args.desired_total, str(real_total)))
 
             client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
-
             client.messages.create(
                 to=TO_NUMBER,
                 from_=FROM_NUMBER,

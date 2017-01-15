@@ -1,8 +1,6 @@
 # SWA-Scraper
 
-![Terminal1](http://i.imgur.com/mmBcNf5.png)
-![Text](http://i.imgur.com/4U6F8hN.png)
-![Terminal2](http://i.imgur.com/nYumGWO.png)
+**Screenshots**: http://imgur.com/a/k8JnL
 
 Inspired by [ezekg's swa-dashboard](https://github.com/ezekg/swa-dashboard), I created a command line tool that scrapes Southwest Airlines' website and displays the current lowest price of airplane tickets. When the current lowest price gets under some threshold that you specify, a text message will be sent to you.
 
@@ -36,7 +34,7 @@ Scrapes the Southwest website according to the interval you set. For best result
 
 `--passengers, -p [adults] # Number of passengers.`
 
-`--desired-total, -dt [-dt] # The total fare for one person should be under this amount (in dollars).`
+`--desired-total, -dt [dollars] # The total fare for one person should be under this amount (in dollars).`
 
 `--interval, -i [minutes] # Optional. How often to scrape Southwest's website (in minutes). Default value = 3 hours.`
 
@@ -47,9 +45,9 @@ For more information on the available command line arguments use the following c
 Sample commands:
 Note: Error checking is non-existent, so make sure to enter the commands properly as specified below.
 
-`$ python app.py --from HOU --to MDW --departure-date 05/12 --return-date 05/14 --passengers 2 --desired-total 215 --interval 30`
+`$ python app.py --depart HOU --arrive MDW --departure-date 05/12 --return-date 05/14 --passengers 2 --desired-total 215 --interval 30`
 
-`$ python app.py --one-way  --from HOU --to MDW --departure-date 05/12 --passengers 2 --desired-total 215 --interval 30`
+`$ python app.py --one-way  --depart HOU --arrive MDW --departure-date 05/12 --passengers 2 --desired-total 215 --interval 30`
 
 ## Improvements/Possible Added Features
 
