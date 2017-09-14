@@ -1,6 +1,10 @@
 # SWA-Scraper
 
-**Screenshots**: http://imgur.com/a/k8JnL
+**Screenshots**:
+
+![phone_example](https://user-images.githubusercontent.com/11463275/30455602-7b72f4f4-996e-11e7-8766-abe534d3db65.png)
+![console_input1](https://user-images.githubusercontent.com/11463275/30455417-d3993644-996d-11e7-911a-83f037f2b0a2.png)
+![console_input2](https://user-images.githubusercontent.com/11463275/30455418-d48221a6-996d-11e7-9ed6-04590123b114.png)
 
 Inspired by [ezekg's swa-dashboard](https://github.com/ezekg/swa-dashboard), I created a command line tool that scrapes Southwest Airlines' website and displays the current lowest price of airplane tickets. When the current lowest price gets under some threshold that you specify, a text message will be sent to you.
 
