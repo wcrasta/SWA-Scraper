@@ -20,9 +20,11 @@ Airlines often change their prices on random days/times. By using this program, 
 
 ## Usage
 
-Scrapes the Southwest website according to the interval you set. For best results when using this program, I recommend setting the interval between 2-3 hours. A more frequent interval than that might be excessive. When the price goes under a certain amount, you will be notified via text message.
+Scrapes airline websites according to the interval you set. For best results when using this program, I recommend setting the interval between 2-3 hours. A more frequent interval than that might be excessive. When the price goes under a certain amount, you will be notified via text message.
 
 `--one-way # Optional. By default, a round trip is assumed.`
+
+`--company, -c [company name] # The company to scrape prices from.`
 
 `--depart, -d [airport code] # The airport to depart from.`
 
@@ -48,11 +50,11 @@ Sample commands:
 
 **NOTE:** Error checking is non-existent, so make sure to enter the commands properly as specified below.
 
-`$ python app.py --depart HOU --arrive MDW --departure-date 05/12/2018 --departure-time AFTER_6PM --return-date 05/14/2018 --return-time ANYTIME --seniors 2 --max-price 215 --interval 30`
+`$ python app.py --company Southwest --depart HOU --arrive MDW --departure-date 05/12/2018 --departure-time AFTER_6PM --return-date 05/14/2018 --return-time ANYTIME --seniors 2 --max-price 215 --interval 30`
 
-`$ python app.py --depart HOU --arrive MDW --departure-date 05/12/2018 --return-date 05/14/2018 --passengers 2 --max-price 215 --interval 30`
+`$ python app.py --company Southwest --depart HOU --arrive MDW --departure-date 05/12/2018 --return-date 05/14/2018 --passengers 2 --max-price 215 --interval 30`
 
-`$ python app.py --one-way --depart HOU --arrive MDW --departure-date 05/12/2018 --passengers 2 --max-price 215 --interval 30`
+`$ python app.py --one-way --company Southwest --depart HOU --arrive MDW --departure-date 05/12/2018 --passengers 2 --max-price 215 --interval 30`
 
 ## Improvements / Possible Added Features
 
@@ -60,10 +62,9 @@ Feel free to contribute to this project! There are many improvements that can be
 
 1. Add flags so that the user can further filter results (nonstop only, direct only).
 2. Add flight details to the notification system (flight numbers, flight times etc).
-3. Split code up further (notification system into it's own file, scraping into another, argument parsing into another etc).
-4. Implement scraping for other websites, making use of nargs and choices attributes for a flag.
-5. Add code for multiple flights for a trip.
-6. Add automated testing.
+3. Implement scraping for other websites, making use of nargs and choices attributes for a flag.
+4. Add code for multiple flights for a trip.
+5. Add automated testing.
 
 ## Instructions for contributing
 
@@ -78,6 +79,6 @@ If you do contribute, be advised that it may take some time to get your PR merge
 ## Credits
 
 Author: Warren Crasta (warrencrasta@gmail.com)
+Contributor: Kyle Jones (kylejones1310@outlook.com)
 Contributor: Joseph Watters
 Contributor: Christopher J Marvin
-Contributor: Kyle Jones (kylejones1310@outlook.com)
