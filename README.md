@@ -63,6 +63,7 @@ Feel free to contribute to this project! There are many improvements that can be
 3. Split code up further (notification system into it's own file, scraping into another, argument parsing into another etc).
 4. Implement scraping for other websites, making use of nargs and choices attributes for a flag.
 5. Add code for multiple flights for a trip.
+6. Add automated testing.
 
 ## Instructions for contributing
 
@@ -77,4 +78,6 @@ If you do contribute, be advised that it may take some time to get your PR merge
 ## Credits
 
 Author: Warren Crasta (warrencrasta@gmail.com)
+Contributor: Joseph Watters
+Contributor: Christopher J Marvin
 Contributor: Kyle Jones (kylejones1310@outlook.com)
