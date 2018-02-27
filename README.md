@@ -16,7 +16,7 @@ Airlines often change their prices on random days/times. By using this program, 
 2. Make sure you have Python (code was tested for 3.X, might work with 2.X) and pip. Install required modules by `pip install -r requirements.txt`
 3. Download [PhantomJS](http://phantomjs.org/download.html) and put phantomjs.exe in your Scripts folder (Windows) or /usr/bin folder (Mac/Linux).
 4. Register for a free account on https://www.twilio.com and get a phone number.
-5. Edit config.ini with your twilio details.
+5. Edit config.ini with your Twilio details.
 
 ## Usage
 
@@ -34,7 +34,9 @@ Scrapes the Southwest website according to the interval you set. For best result
 
 `--passengers, -p [adults] # Number of passengers.`
 
-`--desired-total, -dt [dollars] # The total fare for one person should be under this amount (in dollars).`
+`--seniors, -s [seniors] # Number of passengers.`
+
+`--max-price, -m [dollars] # The total fare for one person should be under this amount (in dollars).`
 
 `--interval, -i [minutes] # Optional. How often to scrape Southwest's website (in minutes). Default value = 3 hours.`
 
@@ -46,15 +48,21 @@ Sample commands:
 
 **NOTE:** Error checking is non-existent, so make sure to enter the commands properly as specified below.
 
-`$ python app.py --depart HOU --arrive MDW --departure-date 05/12 --return-date 05/14 --passengers 2 --desired-total 215 --interval 30`
+`$ python app.py --depart HOU --arrive MDW --departure-date 05/12/2018 --departure-time AFTER_6PM --return-date 05/14/2018 --return-time ANYTIME --seniors 2 --max-price 215 --interval 30`
 
-`$ python app.py --one-way  --depart HOU --arrive MDW --departure-date 05/12 --passengers 2 --desired-total 215 --interval 30`
+`$ python app.py --depart HOU --arrive MDW --departure-date 05/12/2018 --return-date 05/14/2018 --passengers 2 --max-price 215 --interval 30`
 
-## Improvements/Possible Added Features
+`$ python app.py --one-way --depart HOU --arrive MDW --departure-date 05/12/2018 --passengers 2 --max-price 215 --interval 30`
+
+## Improvements / Possible Added Features
 
 Feel free to contribute to this project! There are many improvements that can be made, both in terms of code quality and in terms of whole new ideas that can be implemented. Thoughts I have for new features (may or may not ever be implemented):
 
-1. Add flags so that the user can specify what time of day he/she wants to travel.
+1. Add flags so that the user can further filter results (nonstop only, direct only).
+2. Add flight details to the notification system (flight numbers, flight times etc).
+3. Split code up further (notification system into it's own file, scraping into another, argument parsing into another etc).
+4. Implement scraping for other websites, making use of nargs and choices attributes for a flag.
+5. Add code for multiple flights for a trip.
 
 ## Instructions for contributing
 
@@ -69,3 +77,4 @@ If you do contribute, be advised that it may take some time to get your PR merge
 ## Credits
 
 Author: Warren Crasta (warrencrasta@gmail.com)
+Contributor: Kyle Jones (kylejones1310@outlook.com)
