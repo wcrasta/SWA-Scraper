@@ -1,14 +1,14 @@
-# SWA-Scraper
+# Flight Prices Scraper
 
 **Screenshots**: http://imgur.com/a/k8JnL
 
-Inspired by [ezekg's swa-dashboard](https://github.com/ezekg/swa-dashboard), I created a command line tool that scrapes Southwest Airlines' website and displays the current lowest price of airplane tickets. When the current lowest price gets under some threshold that you specify, a text message will be sent to you.
+Inspired by [ezekg's swa-dashboard](https://github.com/ezekg/swa-dashboard), I created a command line tool that scrapes various airline websites and displays the current lowest price of airplane tickets. When the current lowest price gets under some threshold that you specify, a text message will be sent to you.
 
 While ezekg's tool was coded in Node, I wanted to use Python + Selenium for a learning experience. If you liked this project, please consider starring this repository.
 
 ## Use for this program
 
-Airlines often change their prices on random days/times. By using this program, you'll get a text message notification when the prices have fallen by a certain amount. Southwest is known to normally have the cheapest rates, so this program scrapes data from Southwest. You can run this script locally, or you can hook it up to Digital Ocean/AWS EC2.
+Airlines often change their prices on random days/times. By using this program, you'll get a text message notification when the prices have fallen by a certain amount. You can run this script locally, or you can hook it up to Digital Ocean/AWS EC2.
 
 ## Installation
 
@@ -40,7 +40,7 @@ Scrapes airline websites according to the interval you set. For best results whe
 
 `--max-price, -m [dollars] # The total fare for one person should be under this amount (in dollars).`
 
-`--interval, -i [minutes] # Optional. How often to scrape Southwest's website (in minutes). Default value = 3 hours.`
+`--interval, -i [minutes] # Optional. How often to scrape the airline's website (in minutes). Default value = 3 hours.`
 
 For more information on the available command line arguments use the following command.
 
@@ -63,8 +63,9 @@ Feel free to contribute to this project! There are many improvements that can be
 1. Add flags so that the user can further filter results (nonstop only, direct only).
 2. Add flight details to the notification system (flight numbers, flight times etc).
 3. Implement scraping for other websites, making use of nargs and choices attributes for a flag.
-4. Add code for multiple flights for a trip.
+4. Add code to SWA Scraper for multiple flights for a trip.
 5. Add automated testing.
+6. Add some sanity testing for the arguments (Is the number of passengers greater than 0, is the number of passengers below a given threshold, is the interval within a certain range etc).
 
 ## Instructions for contributing
 
