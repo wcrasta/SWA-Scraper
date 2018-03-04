@@ -8,7 +8,7 @@ While ezekg's tool was coded in Node, I wanted to use Python + Selenium for a le
 
 ## Use for this program
 
-Airlines often change their prices on random days/times. By using this program, you'll get a text message notification when the prices have fallen by a certain amount. You can run this script locally, or you can hook it up to Digital Ocean/AWS EC2.
+Airlines often change their prices on random days/times. By using this program, you'll get a text message notification when the prices have fallen by a certain amount. You can run this script locally, or you can hook it up to Digital Ocean/AWS EC2 and run it 24/7 (recommended).
 
 ## Installation
 
@@ -24,7 +24,7 @@ Scrapes airline websites according to the interval you set. For best results whe
 
 `--one-way # Optional. By default, a round trip is assumed.`
 
-`--company, -c [company name] # The company to scrape prices from.`
+`--company, -c [company name] # The company to scrape prices from.` **Currently, the only company supported is Southwest**.
 
 `--depart, -d [airport code] # The airport to depart from.`
 
@@ -32,11 +32,15 @@ Scrapes airline websites according to the interval you set. For best results whe
 
 `--departure-date, -dd [date] # Date to leave.`
 
+`--departure-time, -dt [time] # Optional. Time period of departure flight.` **Options: BEFORE_NOON, NOON_TO_6PM, AFTER_6PM, ANYTIME**.
+
 `--return-date, -rd [date] # Optional. Date to return.`
+
+`--return-time, -rt [time] # Optional. Time period of return flight.` **Options: BEFORE_NOON, NOON_TO_6PM, AFTER_6PM, ANYTIME**.
 
 `--passengers, -p [adults] # Number of passengers.`
 
-`--seniors, -s [seniors] # Number of passengers.`
+`--seniors, -s [seniors] # Number of passengers who are seniors.`
 
 `--max-price, -m [dollars] # The total fare for one person should be under this amount (in dollars).`
 
@@ -80,6 +84,6 @@ If you do contribute, be advised that it may take some time to get your PR merge
 ## Credits
 
 Author: Warren Crasta (warrencrasta@gmail.com)
-Contributor: Kyle Jones (kylejones1310@outlook.com)
 Contributor: Joseph Watters
+Contributor: Kyle Jones (kylejones1310@outlook.com)
 Contributor: Christopher J Marvin

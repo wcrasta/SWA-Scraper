@@ -1,12 +1,9 @@
-import configparser
-import sys
 import time
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from twilio.rest import TwilioRestClient
 
 def scrape(args):
     """
@@ -85,7 +82,6 @@ def scrape(args):
             print("[%s] Results took too long!" % (
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
 
-        # TODO: Add further filtering on results (nonstop only, direct only)
         outbound_fares = browser.find_element_by_id("faresOutbound")
         outbound_prices = outbound_fares.find_elements_by_class_name("product_price")
 
@@ -96,7 +92,6 @@ def scrape(args):
         lowest_outbound_fare = min(outbound_array)
 
         if not args.one_way:
-            # TODO: Add further filtering on results (nonstop only, direct only)
             return_fares = browser.find_element_by_id("faresReturn")
             return_prices = return_fares.find_elements_by_class_name("product_price")
 
@@ -122,7 +117,6 @@ def scrape(args):
                 str(lowest_outbound_fare)))
 
         # Found a good deal. Send a text via Twilio and then stop running.
-        # TODO: Add flight details to notification
         if real_total <= args.max_price:
             return real_total
 
@@ -134,4 +128,4 @@ def scrape(args):
         )
 
         # Keep scraping according to the interval the user specified.
-        time.sleep(args.interval * 60)
+        time.sleep(int(args.interval) * 60)

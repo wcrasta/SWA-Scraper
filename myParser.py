@@ -73,7 +73,7 @@ def parse():
         "-s",
         action="store",
         type=int,
-        help="Number of seniors.")
+        help="Number of passengers who are seniors.")
 
     parser.add_argument(
         "--max-price",

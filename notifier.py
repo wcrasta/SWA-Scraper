@@ -1,5 +1,4 @@
 import configparser
-import time
 from datetime import datetime
 from twilio.rest import TwilioRestClient
 
