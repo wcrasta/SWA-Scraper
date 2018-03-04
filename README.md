@@ -84,6 +84,9 @@ If you do contribute, be advised that it may take some time to get your PR merge
 ## Credits
 
 Author: Warren Crasta (warrencrasta@gmail.com)
+
 Contributor: Joseph Watters
+
 Contributor: Kyle Jones (kylejones1310@outlook.com)
+
 Contributor: Christopher J Marvin
