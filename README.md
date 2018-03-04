@@ -1,14 +1,14 @@
-# SWA-Scraper
+# Flight Prices Scraper
 
 **Screenshots**: http://imgur.com/a/k8JnL
 
-Inspired by [ezekg's swa-dashboard](https://github.com/ezekg/swa-dashboard), I created a command line tool that scrapes Southwest Airlines' website and displays the current lowest price of airplane tickets. When the current lowest price gets under some threshold that you specify, a text message will be sent to you.
+Inspired by [ezekg's swa-dashboard](https://github.com/ezekg/swa-dashboard), I created a command line tool that scrapes various airline websites and displays the current lowest price of airplane tickets. When the current lowest price gets under some threshold that you specify, a text message will be sent to you.
 
 While ezekg's tool was coded in Node, I wanted to use Python + Selenium for a learning experience. If you liked this project, please consider starring this repository.
 
 ## Use for this program
 
-Airlines often change their prices on random days/times. By using this program, you'll get a text message notification when the prices have fallen by a certain amount. Southwest is known to normally have the cheapest rates, so this program scrapes data from Southwest. You can run this script locally, or you can hook it up to Digital Ocean/AWS EC2.
+Airlines often change their prices on random days/times. By using this program, you'll get a text message notification when the prices have fallen by a certain amount. You can run this script locally, or you can hook it up to Digital Ocean/AWS EC2 and run it 24/7 (recommended).
 
 ## Installation
 
@@ -16,13 +16,15 @@ Airlines often change their prices on random days/times. By using this program, 
 2. Make sure you have Python (code was tested for 3.X, might work with 2.X) and pip. Install required modules by `pip install -r requirements.txt`
 3. Download [PhantomJS](http://phantomjs.org/download.html) and put phantomjs.exe in your Scripts folder (Windows) or /usr/bin folder (Mac/Linux).
 4. Register for a free account on https://www.twilio.com and get a phone number.
-5. Edit config.ini with your twilio details.
+5. Edit config.ini with your Twilio details.
 
 ## Usage
 
-Scrapes the Southwest website according to the interval you set. For best results when using this program, I recommend setting the interval between 2-3 hours. A more frequent interval than that might be excessive. When the price goes under a certain amount, you will be notified via text message.
+Scrapes airline websites according to the interval you set. For best results when using this program, I recommend setting the interval between 2-3 hours. A more frequent interval than that might be excessive. When the price goes under a certain amount, you will be notified via text message.
 
 `--one-way # Optional. By default, a round trip is assumed.`
+
+`--company, -c [company name] # The company to scrape prices from.` **Currently, the only company supported is Southwest**.
 
 `--depart, -d [airport code] # The airport to depart from.`
 
@@ -30,13 +32,19 @@ Scrapes the Southwest website according to the interval you set. For best result
 
 `--departure-date, -dd [date] # Date to leave.`
 
+`--departure-time, -dt [time] # Optional. Time period of departure flight.` **Options: BEFORE_NOON, NOON_TO_6PM, AFTER_6PM, ANYTIME**.
+
 `--return-date, -rd [date] # Optional. Date to return.`
+
+`--return-time, -rt [time] # Optional. Time period of return flight.` **Options: BEFORE_NOON, NOON_TO_6PM, AFTER_6PM, ANYTIME**.
 
 `--passengers, -p [adults] # Number of passengers.`
 
-`--desired-total, -dt [dollars] # The total fare for one person should be under this amount (in dollars).`
+`--seniors, -s [seniors] # Number of passengers who are seniors.`
 
-`--interval, -i [minutes] # Optional. How often to scrape Southwest's website (in minutes). Default value = 3 hours.`
+`--max-price, -m [dollars] # The total fare for one person should be under this amount (in dollars).`
+
+`--interval, -i [minutes] # Optional. How often to scrape the airline's website (in minutes). Default value = 3 hours.`
 
 For more information on the available command line arguments use the following command.
 
@@ -46,15 +54,22 @@ Sample commands:
 
 **NOTE:** Error checking is non-existent, so make sure to enter the commands properly as specified below.
 
-`$ python app.py --depart HOU --arrive MDW --departure-date 05/12 --return-date 05/14 --passengers 2 --desired-total 215 --interval 30`
+`$ python app.py --company Southwest --depart HOU --arrive MDW --departure-date 05/12/2018 --departure-time AFTER_6PM --return-date 05/14/2018 --return-time ANYTIME --seniors 2 --max-price 215 --interval 30`
 
-`$ python app.py --one-way  --depart HOU --arrive MDW --departure-date 05/12 --passengers 2 --desired-total 215 --interval 30`
+`$ python app.py --company Southwest --depart HOU --arrive MDW --departure-date 05/12/2018 --return-date 05/14/2018 --passengers 2 --max-price 215 --interval 30`
 
-## Improvements/Possible Added Features
+`$ python app.py --one-way --company Southwest --depart HOU --arrive MDW --departure-date 05/12/2018 --passengers 2 --max-price 215 --interval 30`
+
+## Improvements / Possible Added Features
 
 Feel free to contribute to this project! There are many improvements that can be made, both in terms of code quality and in terms of whole new ideas that can be implemented. Thoughts I have for new features (may or may not ever be implemented):
 
-1. Add flags so that the user can specify what time of day he/she wants to travel.
+1. Add flags so that the user can further filter results (nonstop only, direct only).
+2. Add flight details to the notification system (flight numbers, flight times etc).
+3. Implement scraping for other websites, making use of nargs and choices attributes for a flag.
+4. Add code to SWA Scraper for multiple flights for a trip.
+5. Add automated testing.
+6. Add some sanity testing for the arguments (Is the number of passengers greater than 0, is the number of passengers below a given threshold, is the interval within a certain range etc).
 
 ## Instructions for contributing
 
@@ -69,3 +84,6 @@ If you do contribute, be advised that it may take some time to get your PR merge
 ## Credits
 
 Author: Warren Crasta (warrencrasta@gmail.com)
+Contributor: Joseph Watters
+Contributor: Kyle Jones (kylejones1310@outlook.com)
+Contributor: Christopher J Marvin
