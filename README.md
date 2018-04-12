@@ -1,5 +1,7 @@
 # Flight Prices Scraper
 
+**UPDATE:** As of April 9 2018, it seems that Southwest has changed the page which contains flight prices for some users. As a result, this program may or may not work for you. See [this link](https://github.com/wcrasta/SWA-Scraper/issues/30) for what needs to be done in order for this program to work as well as some other discussion.  
+
 **Screenshots**: http://imgur.com/a/k8JnL
 
 Inspired by [ezekg's swa-dashboard](https://github.com/ezekg/swa-dashboard), I created a command line tool that scrapes various airline websites and displays the current lowest price of airplane tickets. When the current lowest price gets under some threshold that you specify, a text message will be sent to you.
