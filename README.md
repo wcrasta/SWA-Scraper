@@ -4,9 +4,7 @@
 
 **Screenshots**: http://imgur.com/a/k8JnL
 
-Inspired by [ezekg's swa-dashboard](https://github.com/ezekg/swa-dashboard), I created a command line tool that scrapes various airline websites and displays the current lowest price of airplane tickets. When the current lowest price gets under some threshold that you specify, a text message will be sent to you.
-
-While ezekg's tool was coded in Node, I wanted to use Python + Selenium for a learning experience. If you liked this project, please consider starring this repository.
+I created a command line tool that scrapes various airline websites and displays the current lowest price of airplane tickets. When the current lowest price gets under some threshold that you specify, a text message will be sent to you. If you liked this project, please consider starring this repository.
 
 ## Use for this program
 
