@@ -75,15 +75,15 @@ def scrape(args):
         try:
             # Webdriver might be too fast. Tell it to slow down.
             wait = WebDriverWait(browser, 120)
-            wait.until(EC.element_to_be_clickable((By.ID, "faresOutbound")))
+            wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "currency_dollars")))
             print("[%s] Results loaded." % (
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
         except TimeoutError:
             print("[%s] Results took too long!" % (
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
 
-        outbound_fares = browser.find_element_by_id("faresOutbound")
-        outbound_prices = outbound_fares.find_elements_by_class_name("product_price")
+        outbound_fares = browser.find_elements_by_tag_name("ul")[2]
+        outbound_prices = outbound_fares.find_elements_by_class_name("currency_dollars")
 
         for price in outbound_prices:
             realprice = price.text.replace("$", "")
@@ -92,8 +92,8 @@ def scrape(args):
         lowest_outbound_fare = min(outbound_array)
 
         if not args.one_way:
-            return_fares = browser.find_element_by_id("faresReturn")
-            return_prices = return_fares.find_elements_by_class_name("product_price")
+            return_fares = browser.find_elements_by_tag_name("ul")[5]
+            return_prices = return_fares.find_elements_by_class_name("currency_dollars")
 
             for price in return_prices:
                 realprice = price.text.replace("$", "")
