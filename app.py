@@ -1,5 +1,4 @@
 import swaScraper
-import notifier
 import myParser
 
 def main():
@@ -11,7 +10,17 @@ def main():
     if args.company == "Southwest":
         real_total = swaScraper.scrape(args)
 
-    notifier.sendNotification(real_total, args.max_price)
+    # If the user doesn't want text notifications, just print the result
+    if (args.no_text):
+        from datetime import datetime
+
+        print("[%s] Found a deal. Max Total: $%s. Current Total: $%s." % (
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            args.max_price, str(real_total)))
+    else:
+        # Send a text notifying the user that a lower price was found
+        import notifier
+        notifier.sendNotification(real_total, args.max_price)
 
 if __name__ == "__main__":
     main()
