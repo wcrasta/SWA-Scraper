@@ -46,6 +46,8 @@ Scrapes airline websites according to the interval you set. For best results whe
 
 `--interval, -i [minutes] # Optional. How often to scrape the airline's website (in minutes). Default value = 3 hours.`
 
+`--no-text, -nt # Optional. Do not send a text message when a lower price is found.`
+
 For more information on the available command line arguments use the following command.
 
 `python app.py --help`

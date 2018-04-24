@@ -90,6 +90,12 @@ def parse():
         default=180,
         help="Refresh time period.")
 
+    parser.add_argument(
+        "--no-text",
+        "-nt",
+        action="store_true",
+        help="If present, no text message will get sent on cheaper flight")
+
     args = parser.parse_args()
 
     return args
