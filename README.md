@@ -14,7 +14,7 @@ Airlines often change their prices on random days/times. By using this program, 
 
 1. Clone this repository. `git clone https://github.com/wcrasta/SWA-Scraper.git`
 2. Make sure you have Python (code was tested for 3.X, might work with 2.X) and pip. Install required modules by `pip install -r requirements.txt`
-3. Download [PhantomJS](http://phantomjs.org/download.html) and put phantomjs.exe in your Scripts folder (Windows) or /usr/bin folder (Mac/Linux).
+3. Download [Geckodriver (For headless firefox)](https://github.com/mozilla/geckodriver/releases) and put geckodriver.exe in your Scripts folder (Windows) or /usr/bin folder (Mac/Linux).
 4. Register for a free account on https://www.twilio.com and get a phone number.
 5. Edit config.ini with your Twilio details.
 
