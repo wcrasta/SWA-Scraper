@@ -4,6 +4,8 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+#New include for Firefox headless
+from selenium.webdriver.firefox.options import Options
 
 def scrape(args):
     """
@@ -11,9 +13,13 @@ def scrape(args):
     If we find a flight that meets our search parameters, send an SMS message.
     """
     while True:
-        # PhantomJS is headless, so it doesn't open up a browser.
-        browser = webdriver.PhantomJS()
+        # FireFox headless so it doesn't open a browser. Make sure "Geckodriver" (https://github.com/mozilla/geckodriver/releases) is in the same folder as swaScraper.py
+        options = Options()
+        options.set_headless(headless=True)
+        browser = webdriver.Firefox(firefox_options=options)
         browser.get("https://www.southwest.com/flight/?int=HOME-BOOKING-WIDGET-ADVANCED-AIR/")
+
+
 
         if args.one_way:
             # Set one way trip with click event.
@@ -127,5 +133,7 @@ def scrape(args):
             ''' % (datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         )
 
+        #Cleanup broswer object at the end of the program
+        browser.quit()
         # Keep scraping according to the interval the user specified.
         time.sleep(int(args.interval) * 60)
