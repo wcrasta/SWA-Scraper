@@ -5,6 +5,128 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
+def correct_date(date):
+    """
+    Converts the date format to one accepted by SWA
+
+    SWA form cannot accept slashes for dates and is in the format YYYY-MM-DD
+    :param date: Date string to correct
+    :return: Corrected date string
+
+    """
+    a, b, c = date.split("/")
+
+    if(len(a) == 4):
+        # Assumed format is year, month, day
+        return "%s-%s-%s"%(a, b, c)
+    else:
+        # Assumed format is month, day, year
+        return "%s-%s-%s" % (c, a, b)
+
+def correct_time_string(timeString):
+    """
+    Returns a valid string version of the time of departure/arrival based on
+    given argument value
+
+    If no-value is given, "ALL_DAY" will be returned
+
+    :param timeString: String to correct
+    :return: Corrected string value
+    """
+    if timeString == "BEFORE_NOON":
+        return "BEFORE_NOON"
+
+    elif timeString == "NOON_TO_6PM":
+        return "NOON_TO_SIX"
+
+    elif timeString == "AFTER_6PM":
+        return "AFTER_SIX"
+
+    else:
+        return "ALL_DAY"
+
+def direct_load(args, browser):
+    """
+    Creates and sends a HTTP GET request for ticket prices based on the
+    given arguments
+
+    :param args: Arguments used to form request
+    :param browser: Browser object used to make request
+    :return: None
+    """
+    
+    commandString = ""
+
+    if args.passengers:
+        # Set number of passengers.
+        commandString += "adultPassengersCount=%s&" % (args.passengers)
+    else:
+        commandString += "adultPassengersCount=%s&" % ("0")
+
+    # Set departure date.
+    cleanedUpDate = correct_date(args.departure_date)
+    commandString += "departureDate=%s&" % (cleanedUpDate)
+
+    # Set the departure time
+    correctedTime = correct_time_string(args.departure_time)
+    commandString += "departureTimeOfDay=%s&" % (correctedTime)
+
+    # Set the arrival airport.
+    commandString += "destinationAirportCode=%s&" % (args.arrive)
+
+    # How is the fare to be paid, USD or POINTS
+    commandString += "fareType=USD&"
+
+    commandString +="int=HOMEQBOMAIR&leapfrogRequest=true&"
+
+    # Set the departing airport.
+    commandString += "originationAirportCode=%s&" % (args.depart)
+
+    # If there are any seniors load the senior column
+    # If there are no seniors, bnut the senior column is loaded, no prices
+    # will get loaded
+    if args.seniors and int(args.seniors) > 0:
+        commandString += "passengerType=SENIOR&"
+    else:
+        commandString += "passengerType=ADULT&"
+
+    # Promo code entry
+    commandString += "promoCode=&"
+
+    # No idea what this is for, but it is in the GET string
+    commandString += "redirectToVision=true&reset=true&"
+
+    # Used in mult-stop trips
+    commandString += "returnAirportCode=&"
+
+    # Return date is always in form, even if it is a one-way trip
+    # When it is one-way, the form item will have no value
+    cleanedUpDate = correct_date(args.return_date)
+    commandString += "returnDate=%s&" % (cleanedUpDate)
+
+    # Set return time, even if the trip is a one-way trip.
+    correctedTime = correct_time_string(args.return_time)
+    commandString += "returnTimeOfDay=%s&" % (correctedTime)
+
+    # Set number of seniors.
+    if args.seniors:
+        commandString += "seniorPassengersCount=%s&" % (args.seniors)
+    else:
+        commandString += "seniorPassengersCount=%s&" % ("0")
+
+    # Set type of trip
+    if args.one_way:
+        commandString += "tripType=%s&" % ("one-way")
+    else:
+        commandString += "tripType=%s&" % ("roundtrip")
+
+    # Put the URL together
+    outStr = "https://www.southwest.com/air/booking/select.html?"
+    outStr += commandString
+
+    browser.get(outStr)
+
+
 def scrape(args):
     """
     Run scraper on Southwest Airlines website
@@ -13,58 +135,8 @@ def scrape(args):
     while True:
         # PhantomJS is headless, so it doesn't open up a browser.
         browser = webdriver.PhantomJS()
-        browser.get("https://www.southwest.com/flight/?int=HOME-BOOKING-WIDGET-ADVANCED-AIR/")
 
-        if args.one_way:
-            # Set one way trip with click event.
-            one_way_elem = browser.find_element_by_id("oneWay")
-            one_way_elem.click()
-
-        # Set the departing airport.
-        depart_airport = browser.find_element_by_id("originAirport_displayed")
-        browser.execute_script("arguments[0].removeAttribute('readonly', 0);", depart_airport)
-        depart_airport.clear()
-        depart_airport.send_keys(args.depart)
-
-        # Set the arrival airport.
-        arrive_airport = browser.find_element_by_id("destinationAirport_displayed")
-        arrive_airport.clear()
-        arrive_airport.send_keys(args.arrive)
-
-        # Set departure date.
-        depart_date = browser.find_element_by_id("outboundDate")
-        depart_date.clear()
-        depart_date.send_keys(args.departure_date)
-        
-        if args.departure_time:
-            # Set departure time.
-            depart_time = browser.find_element_by_id("outboundTimeOfDay")
-            depart_time.send_keys(args.departure_time)
-
-        if not args.one_way:
-            # Set return date.
-            return_date = browser.find_element_by_id("returnDate")
-            return_date.clear()
-            return_date.send_keys(args.return_date)
-
-            if args.return_time:
-                # Set return time.
-                return_time = browser.find_element_by_id("returnTimeOfDay")
-                return_time.send_keys(args.return_time)
-
-        if args.passengers:
-            # Set number of passengers.
-            passengers = browser.find_element_by_id("adultPassengerCount")
-            passengers.send_keys(args.passengers)
-
-        if args.seniors:
-            # Set number of seniors.
-            seniors = browser.find_element_by_id("seniorPassengerCount")
-            seniors.send_keys(args.seniors)
-
-        # Submit Form
-        search = browser.find_element_by_id("submitButton")
-        search.click()
+        direct_load(args, browser)
 
         print("[%s] Submitting form..." % (
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
