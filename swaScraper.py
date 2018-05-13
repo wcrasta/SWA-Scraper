@@ -59,20 +59,20 @@ def direct_load(args, browser):
 
     if args.passengers:
         # Set number of passengers.
-        commandString += "adultPassengersCount=%s&" % (args.passengers)
+        commandString += ("adultPassengersCount=%s&" % args.passengers)
     else:
-        commandString += "adultPassengersCount=%s&" % ("0")
+        commandString += ("adultPassengersCount=%s&" % "0")
 
     # Set departure date.
     cleanedUpDate = correct_date(args.departure_date)
-    commandString += "departureDate=%s&" % (cleanedUpDate)
+    commandString += ("departureDate=%s&" % cleanedUpDate)
 
     # Set the departure time
     correctedTime = correct_time_string(args.departure_time)
-    commandString += "departureTimeOfDay=%s&" % (correctedTime)
+    commandString += ("departureTimeOfDay=%s&" % correctedTime)
 
     # Set the arrival airport.
-    commandString += "destinationAirportCode=%s&" % (args.arrive)
+    commandString += ("destinationAirportCode=%s&" % args.arrive)
 
     # How is the fare to be paid, USD or POINTS
     commandString += "fareType=USD&"
@@ -80,7 +80,7 @@ def direct_load(args, browser):
     commandString +="int=HOMEQBOMAIR&leapfrogRequest=true&"
 
     # Set the departing airport.
-    commandString += "originationAirportCode=%s&" % (args.depart)
+    commandString += ("originationAirportCode=%s&" % args.depart)
 
     # If there are any seniors load the senior column
     # If there are no seniors, bnut the senior column is loaded, no prices
@@ -102,23 +102,23 @@ def direct_load(args, browser):
     # Return date is always in form, even if it is a one-way trip
     # When it is one-way, the form item will have no value
     cleanedUpDate = correct_date(args.return_date)
-    commandString += "returnDate=%s&" % (cleanedUpDate)
+    commandString += ("returnDate=%s&" % cleanedUpDate)
 
     # Set return time, even if the trip is a one-way trip.
     correctedTime = correct_time_string(args.return_time)
-    commandString += "returnTimeOfDay=%s&" % (correctedTime)
+    commandString += ("returnTimeOfDay=%s&" % correctedTime)
 
     # Set number of seniors.
     if args.seniors:
-        commandString += "seniorPassengersCount=%s&" % (args.seniors)
+        commandString += ("seniorPassengersCount=%s&" % args.seniors)
     else:
-        commandString += "seniorPassengersCount=%s&" % ("0")
+        commandString += ("seniorPassengersCount=%s&" % "0")
 
     # Set type of trip
     if args.one_way:
-        commandString += "tripType=%s&" % ("one-way")
+        commandString += ("tripType=%s&" % "one-way")
     else:
-        commandString += "tripType=%s&" % ("roundtrip")
+        commandString += ("tripType=%s&" % "roundtrip")
 
     # Put the URL together
     outStr = "https://www.southwest.com/air/booking/select.html?"
@@ -131,6 +131,7 @@ def scrape(args):
     """
     Run scraper on Southwest Airlines website
     If we find a flight that meets our search parameters, send an SMS message.
+    Otherwise, keep scraping the website and look for a better deal.
     """
     # Tell ChromeDriver to be headless, so it doesn't open up a browser.
     options = webdriver.ChromeOptions()

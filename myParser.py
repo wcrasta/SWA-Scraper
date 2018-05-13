@@ -51,7 +51,6 @@ def parse():
         "--return-date",
         "-rd",
         type=str,
-        required=True,
         help="Date of return flight.")
     
     parser.add_argument(
@@ -66,7 +65,7 @@ def parse():
         "-p",
         action="store",
         type=int,
-        help="Number of passengers.")
+        help="Number of passengers (who are not seniors).")
 
     parser.add_argument(
         "--seniors",
@@ -80,7 +79,7 @@ def parse():
         "-m",
         type=int,
         required=True,
-        help="Maximum total cost of flights.")
+        help="The total fare for one person should be under this amount (in dollars).")
 
     parser.add_argument(
         "--interval",
@@ -88,13 +87,13 @@ def parse():
         type=int,
         required=True,
         default=180,
-        help="Refresh time period.")
+        help="How often to scrape the airline's website (in minutes). Default value = 3 hours.")
 
     parser.add_argument(
         "--no-text",
         "-nt",
         action="store_true",
-        help="If present, no text message will get sent on cheaper flight")
+        help="Do not send a text message when a lower price is found.")
 
     args = parser.parse_args()
 
