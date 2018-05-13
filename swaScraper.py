@@ -132,9 +132,14 @@ def scrape(args):
     Run scraper on Southwest Airlines website
     If we find a flight that meets our search parameters, send an SMS message.
     """
+    # Tell ChromeDriver to be headless, so it doesn't open up a browser.
+    options = webdriver.ChromeOptions()
+    options.add_argument('headless')
+    options.add_argument('log-level=3')
+
     while True:
-        # PhantomJS is headless, so it doesn't open up a browser.
-        browser = webdriver.PhantomJS()
+
+        browser = webdriver.Chrome(chrome_options=options)
 
         direct_load(args, browser)
 
