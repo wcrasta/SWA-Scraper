@@ -1,22 +1,20 @@
 # Flight Prices Scraper
 
-**UPDATE:** As of April 9 2018, it seems that Southwest has changed the page which contains flight prices for some users. As a result, this program may or may not work for you. See [this link](https://github.com/wcrasta/SWA-Scraper/issues/30) for what needs to be done in order for this program to work as well as some other discussion.  
-
 **Screenshots**: http://imgur.com/a/k8JnL
 
 I created a command line tool that scrapes various airline websites and displays the current lowest price of airplane tickets. When the current lowest price gets under some threshold that you specify, a text message will be sent to you. If you liked this project, please consider starring this repository.
 
 ## Use for this program
 
-Airlines often change their prices on random days/times. By using this program, you'll get a text message notification when the prices have fallen by a certain amount. You can run this script locally, or you can hook it up to Digital Ocean/AWS EC2 and run it 24/7 (recommended).
+Airlines often change their prices on random days/times. By using this program, you'll get a text message notification when the prices have fallen by a certain amount. You can run this script locally, or you can hook it up to a cloud service (like AWS EC2) and run it 24/7 (recommended).
 
 ## Installation
 
 1. Clone this repository. `git clone https://github.com/wcrasta/SWA-Scraper.git`
 2. Make sure you have Python (code was tested for 3.X, might work with 2.X) and pip. Install required modules by `pip install -r requirements.txt`
 3. Download [ChromeDriver](http://chromedriver.chromium.org/downloads) and put chromedriver.exe in your Scripts folder (Windows) or /usr/bin folder (Mac/Linux).
-4. Register for a free account on https://www.twilio.com and get a phone number.
-5. Edit config.ini with your Twilio details.
+4. Register for a free account on https://www.twilio.com and get a phone number (**optional**).
+5. Edit config.ini with your Twilio details (**optional**).
 
 ## Usage
 
@@ -54,17 +52,17 @@ For more information on the available command line arguments use the following c
 
 Sample commands:
 
-**NOTE:** Error checking is non-existent, so make sure to enter the commands properly as specified below.
+**NOTE:** Error checking is non-existent, so make sure to enter the commands similarly as specified below.
 
-`$ python app.py --company Southwest --depart HOU --arrive MDW --departure-date 05/12/2018 --departure-time AFTER_6PM --return-date 05/14/2018 --return-time ANYTIME --seniors 2 --max-price 215 --interval 30`
+`$ python app.py --company Southwest --depart HOU --arrive MDW --departure-date 10/12/2018 --departure-time AFTER_6PM --return-date 10/14/2018 --return-time ANYTIME --passengers 2 --max-price 215 --interval 30`
 
-`$ python app.py --company Southwest --depart HOU --arrive MDW --departure-date 05/12/2018 --return-date 05/14/2018 --passengers 2 --max-price 215 --interval 30`
+`$ python app.py --company Southwest --depart HOU --arrive MDW --departure-date 10/12/2018 --return-date 10/14/2018 --passengers 1 --max-price 600 --interval 30 --no-text`
 
-`$ python app.py --one-way --company Southwest --depart HOU --arrive MDW --departure-date 05/12/2018 --passengers 2 --max-price 215 --interval 30`
+`$ python app.py --one-way --company Southwest --depart HOU --arrive MDW --departure-date 10/12/2018 --passengers 2 --max-price 215 --interval 30`
 
 ## Improvements / Possible Added Features
 
-Feel free to contribute to this project! There are many improvements that can be made, both in terms of code quality and in terms of whole new ideas that can be implemented. Thoughts I have for new features (may or may not ever be implemented):
+Feel free to contribute to this project! There are many improvements that can be made, both in terms of code quality and in terms of whole new ideas that can be implemented. Thoughts for new features (may or may not ever be implemented):
 
 1. Add flags so that the user can further filter results (nonstop only, direct only).
 2. Add flight details to the notification system (flight numbers, flight times etc).
@@ -73,13 +71,7 @@ Feel free to contribute to this project! There are many improvements that can be
 5. Add automated testing.
 6. Add some sanity testing for the arguments (Is the number of passengers greater than 0, is the number of passengers below a given threshold, is the interval within a certain range etc).
 
-## Instructions for contributing
-
-1. Fork the repository!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request
+## Contributing
 
 If you do contribute, be advised that it may take some time to get your PR merged in. If you're interested in being a collaborator, e-mail me. If you don't know how to implement something, but do have an idea that you would like to see implemented, feel free to shoot me an e-mail and I can try to implement it.
 
@@ -92,3 +84,5 @@ Contributor: Joseph Watters
 Contributor: Kyle Jones (kylejones1310@outlook.com)
 
 Contributor: Christopher J Marvin
+
+Contributor: dcm684
