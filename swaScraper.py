@@ -14,14 +14,17 @@ def correct_date(date):
     :return: Corrected date string
 
     """
-    a, b, c = date.split("/")
 
-    if(len(a) == 4):
-        # Assumed format is year, month, day
-        return "%s-%s-%s"%(a, b, c)
+    if date is None:
+        return ""
     else:
-        # Assumed format is month, day, year
-        return "%s-%s-%s" % (c, a, b)
+        a, b, c = date.split("/")
+        if len(a) == 4:
+            # Assumed format is year, month, day
+            return "%s-%s-%s"%(a, b, c)
+        else:
+            # Assumed format is month, day, year
+            return "%s-%s-%s" % (c, a, b)
 
 def correct_time_string(timeString):
     """
@@ -77,8 +80,6 @@ def direct_load(args, browser):
     # How is the fare to be paid, USD or POINTS
     commandString += "fareType=USD&"
 
-    commandString +="int=HOMEQBOMAIR&leapfrogRequest=true&"
-
     # Set the departing airport.
     commandString += ("originationAirportCode=%s&" % args.depart)
 
@@ -92,9 +93,6 @@ def direct_load(args, browser):
 
     # Promo code entry
     commandString += "promoCode=&"
-
-    # No idea what this is for, but it is in the GET string
-    commandString += "redirectToVision=true&reset=true&"
 
     # Used in mult-stop trips
     commandString += "returnAirportCode=&"
@@ -116,7 +114,7 @@ def direct_load(args, browser):
 
     # Set type of trip
     if args.one_way:
-        commandString += ("tripType=%s&" % "one-way")
+        commandString += ("tripType=%s&" % "oneway")
     else:
         commandString += ("tripType=%s&" % "roundtrip")
 
@@ -125,7 +123,6 @@ def direct_load(args, browser):
     outStr += commandString
 
     browser.get(outStr)
-
 
 def scrape(args):
     """
@@ -160,7 +157,11 @@ def scrape(args):
             print("[%s] Results took too long!" % (
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
 
-        outbound_fares = browser.find_elements_by_tag_name("ul")[2]
+        if args.seniors:
+            outbound_fares = browser.find_elements_by_tag_name("ul")[1]
+        else:
+            outbound_fares = browser.find_elements_by_tag_name("ul")[2]
+
         outbound_prices = outbound_fares.find_elements_by_class_name("currency_dollars")
 
         for price in outbound_prices:
