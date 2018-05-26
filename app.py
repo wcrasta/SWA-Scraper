@@ -11,7 +11,9 @@ def main():
         real_total = swaScraper.scrape(args)
 
     # If the user doesn't want text notifications, just print the result to the console.
-    if args.no_text:
+    if real_total is None:
+        exit
+    elif args.no_text:
         from datetime import datetime
 
         print("[%s] Found a deal. Max Total: $%s. Current Total: $%s." % (

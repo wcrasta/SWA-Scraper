@@ -202,9 +202,12 @@ def scrape(args):
         print(
             '''
             [%s] Couldn\'t find a deal under the amount you specified.
-            Trying again to find cheaper prices...
             ''' % (datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         )
 
         # Keep scraping according to the interval the user specified.
-        time.sleep(int(args.interval) * 60)
+        if args.interval:
+            print("Trying again to find cheaper prices...")
+            time.sleep(int(args.interval) * 60)
+        else:
+            break

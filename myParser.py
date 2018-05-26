@@ -85,9 +85,7 @@ def parse():
         "--interval",
         "-i",
         type=int,
-        required=True,
-        default=180,
-        help="How often to scrape the airline's website (in minutes). Default value = 3 hours.")
+        help="How often to scrape the airline's website (in minutes).")
 
     parser.add_argument(
         "--no-text",
