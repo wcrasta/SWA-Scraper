@@ -41,6 +41,12 @@ def parse():
         help="Date of departure flight.")
     
     parser.add_argument(
+        "--flightnum",
+        "-ft",
+        type=str,
+        help="Specific flight number to check if desired")
+
+    parser.add_argument(
         "--departure-time",
         "-dt",
         type=str,

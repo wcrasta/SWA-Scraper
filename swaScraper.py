@@ -159,6 +159,10 @@ def scrape(args):
 
         if args.seniors:
             outbound_fares = browser.find_elements_by_tag_name("ul")[1]
+        elif args.flightnum:
+            # find li which flight number exists
+            xpath = '//button[contains(@class,\'flight-number\') and contains(.,"{0}")]/ancestor::*[self::li][1]'.format(args.flightnum)
+            outbound_fares = browser.find_element_by_xpath(xpath)
         else:
             outbound_fares = browser.find_elements_by_tag_name("ul")[2]
 
