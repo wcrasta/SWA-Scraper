@@ -74,6 +74,12 @@ def parse():
         help="Number of passengers (who are not seniors).")
 
     parser.add_argument(
+        "--points",
+        "-pt",
+        action="store_true",
+        help="If present, search by points instead of dollars.")
+
+    parser.add_argument(
         "--seniors",
         "-s",
         action="store",
@@ -85,7 +91,7 @@ def parse():
         "-m",
         type=int,
         required=True,
-        help="The total fare for one person should be under this amount (in dollars).")
+        help="The total fare for one person should be under this amount (in dollars or points).")
 
     parser.add_argument(
         "--interval",

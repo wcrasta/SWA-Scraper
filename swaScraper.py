@@ -78,7 +78,10 @@ def direct_load(args, browser):
     commandString += ("destinationAirportCode=%s&" % args.arrive)
 
     # How is the fare to be paid, USD or POINTS
-    commandString += "fareType=USD&"
+    if args.points and int(args.points) > 0:
+    	commandString += "fareType=POINTS&"
+    else:
+    	commandString += "fareType=USD&"
 
     # Set the departing airport.
     commandString += ("originationAirportCode=%s&" % args.depart)
@@ -150,7 +153,10 @@ def scrape(args):
         try:
             # Webdriver might be too fast. Tell it to slow down.
             wait = WebDriverWait(browser, 120)
-            wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "currency_dollars")))
+            if args.points:
+                wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "currency_points")))
+            else:
+                wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "currency_dollars")))
             print("[%s] Results loaded." % (
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
         except TimeoutError:
@@ -166,36 +172,47 @@ def scrape(args):
         else:
             outbound_fares = browser.find_elements_by_tag_name("ul")[2]
 
-        outbound_prices = outbound_fares.find_elements_by_class_name("currency_dollars")
+        if args.points:
+            outbound_prices = outbound_fares.find_elements_by_class_name("currency_points")
+            for price in outbound_prices:
+                realprice = price.text.replace(",", "")
+                outbound_array.append(int(realprice))
+        else:
+            outbound_prices = outbound_fares.find_elements_by_class_name("currency_dollars")
+            for price in outbound_prices:
+                realprice = price.text.replace("$", "")
+                outbound_array.append(int(realprice))
 
-        for price in outbound_prices:
-            realprice = price.text.replace("$", "")
-            outbound_array.append(int(realprice))
 
         lowest_outbound_fare = min(outbound_array)
 
         if not args.one_way:
             return_fares = browser.find_elements_by_tag_name("ul")[5]
-            return_prices = return_fares.find_elements_by_class_name("currency_dollars")
-
-            for price in return_prices:
-                realprice = price.text.replace("$", "")
-                return_array.append(int(realprice))
+            if args.points:
+                return_prices = return_fares.find_elements_by_class_name("currency_points")
+                for price in return_prices:
+                    realprice = price.text.replace(",", "")
+                    return_array.append(int(realprice))
+            else:
+                return_prices = return_fares.find_elements_by_class_name("currency_dollars")
+                for price in return_prices:
+                    realprice = price.text.replace("$", "")
+                    return_array.append(int(realprice))
 
             lowest_return_fare = min(return_array)
             real_total = lowest_outbound_fare + lowest_return_fare
 
-            print("[%s] Current Lowest Outbound Fare: $%s." % (
+            print("[%s] Current Lowest Outbound Fare: %s." % (
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 str(lowest_outbound_fare)))
 
-            print("[%s] Current Lowest Return Fare: $%s." % (
+            print("[%s] Current Lowest Return Fare: %s." % (
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 str(lowest_return_fare)))
 
         else:
             real_total = lowest_outbound_fare
-            print("[%s] Current Lowest Outbound Fare: $%s." % (
+            print("[%s] Current Lowest Outbound Fare: %s." % (
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 str(lowest_outbound_fare)))
 
