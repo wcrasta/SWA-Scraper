@@ -40,9 +40,13 @@ Scrapes airline websites according to the interval you set. For best results whe
 
 `--seniors, -s [seniors] # Number of passengers who are seniors.`
 
-`--max-price, -m [dollars] # The total fare for one person should be under this amount (in dollars).`
+`--max-price, -m [dollars] # The total fare for one person should be under this amount (in dollars or points). Default is dollars.`
 
-`--interval, -i [minutes] # Optional. How often to scrape the airline's website (in minutes). Default value = 3 hours.`
+`--points, -p [points] # Optional. Search for max-price in points instead of dollars. 
+
+`--flightnum, -fn [flight number] # Optional. Search for a lower price on a specific outbound flight. Enter numerical only.
+
+`--interval, -i [minutes] # Optional. How often to scrape the airline's website (in minutes).`
 
 `--no-text, -nt # Optional. Do not send a text message when a lower price is found.`
 
@@ -60,16 +64,17 @@ Sample commands:
 
 `$ python app.py --one-way --company Southwest --depart HOU --arrive MDW --departure-date 10/12/2018 --passengers 2 --max-price 215 --interval 30`
 
+`$ python app.py --company Southwest --depart HOU --arrive MDW --departure-date 10/12/2018 --one-way --passengers 1 --max-price 10500 --points --flightnum 1283`
+
 ## Improvements / Possible Added Features
 
 Feel free to contribute to this project! There are many improvements that can be made, both in terms of code quality and in terms of whole new ideas that can be implemented. Thoughts for new features (may or may not ever be implemented):
 
 1. Add flags so that the user can further filter results (nonstop only, direct only).
-2. Add flight details to the notification system (flight numbers, flight times etc).
-3. Implement scraping for other websites, making use of nargs and choices attributes for a flag.
-4. Add code to SWA Scraper for multiple flights for a trip.
-5. Add automated testing.
-6. Add some sanity testing for the arguments (Is the number of passengers greater than 0, is the number of passengers below a given threshold, is the interval within a certain range etc).
+2. Implement scraping for other websites, making use of nargs and choices attributes for a flag.
+3. Add code to SWA Scraper for multiple flights for a trip.
+4. Add automated testing.
+5. Add some sanity testing for the arguments (Is the number of passengers greater than 0, is the number of passengers below a given threshold, is the interval within a certain range etc).
 
 ## Contributing
 
@@ -86,3 +91,5 @@ Contributor: Kyle Jones (kylejones1310@outlook.com)
 Contributor: Christopher J Marvin
 
 Contributor: dcm684
+
+Contributor: hoopsbwc34

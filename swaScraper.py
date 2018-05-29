@@ -79,9 +79,9 @@ def direct_load(args, browser):
 
     # How is the fare to be paid, USD or POINTS
     if args.points and int(args.points) > 0:
-    	commandString += "fareType=POINTS&"
+        commandString += "fareType=POINTS&"
     else:
-    	commandString += "fareType=USD&"
+        commandString += "fareType=USD&"
 
     # Set the departing airport.
     commandString += ("originationAirportCode=%s&" % args.depart)
@@ -133,6 +133,14 @@ def scrape(args):
     If we find a flight that meets our search parameters, send an SMS message.
     Otherwise, keep scraping the website and look for a better deal.
     """
+    # Set variables for points vs dollars
+    if args.points:
+        searchClass = "currency_points"
+        replaceChar = ","
+    else:
+        searchClass = "currency_dollars"
+        replaceChar = "$"
+
     # Tell ChromeDriver to be headless, so it doesn't open up a browser.
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
@@ -153,51 +161,35 @@ def scrape(args):
         try:
             # Webdriver might be too fast. Tell it to slow down.
             wait = WebDriverWait(browser, 120)
-            if args.points:
-                wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "currency_points")))
-            else:
-                wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "currency_dollars")))
+            wait.until(EC.element_to_be_clickable((By.CLASS_NAME, searchClass)))
             print("[%s] Results loaded." % (
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
         except TimeoutError:
             print("[%s] Results took too long!" % (
                 datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
 
-        if args.seniors:
-            outbound_fares = browser.find_elements_by_tag_name("ul")[1]
-        elif args.flightnum:
+        if args.flightnum:
             # find li which flight number exists
             xpath = '//button[contains(@class,\'flight-number\') and contains(.,"{0}")]/ancestor::*[self::li][1]'.format(args.flightnum)
             outbound_fares = browser.find_element_by_xpath(xpath)
         else:
             outbound_fares = browser.find_elements_by_tag_name("ul")[2]
 
-        if args.points:
-            outbound_prices = outbound_fares.find_elements_by_class_name("currency_points")
-            for price in outbound_prices:
-                realprice = price.text.replace(",", "")
-                outbound_array.append(int(realprice))
-        else:
-            outbound_prices = outbound_fares.find_elements_by_class_name("currency_dollars")
-            for price in outbound_prices:
-                realprice = price.text.replace("$", "")
-                outbound_array.append(int(realprice))
+        # find currency_dollars or currency_points and collect each price
+        outbound_prices = outbound_fares.find_elements_by_class_name(searchClass)
+        for price in outbound_prices:
+            realprice = price.text.replace(replaceChar, "")
+            outbound_array.append(int(realprice))
 
 
         lowest_outbound_fare = min(outbound_array)
 
         if not args.one_way:
             return_fares = browser.find_elements_by_tag_name("ul")[5]
-            if args.points:
-                return_prices = return_fares.find_elements_by_class_name("currency_points")
-                for price in return_prices:
-                    realprice = price.text.replace(",", "")
-                    return_array.append(int(realprice))
-            else:
-                return_prices = return_fares.find_elements_by_class_name("currency_dollars")
-                for price in return_prices:
-                    realprice = price.text.replace("$", "")
-                    return_array.append(int(realprice))
+            return_prices = return_fares.find_elements_by_class_name(searchClass)
+            for price in return_prices:
+                realprice = price.text.replace(replaceChar,"")
+                return_array.append(int(realprice))
 
             lowest_return_fare = min(return_array)
             real_total = lowest_outbound_fare + lowest_return_fare

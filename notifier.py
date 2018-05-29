@@ -13,7 +13,7 @@ def sendNotification(real_total, max_price):
     """
     Sends an SMS message using Twilio.
     """
-    print("[%s] Found a deal. Max Total: $%s. Current Total: $%s." % (
+    print("[%s] Found a deal. Max Total: %s. Current Total: %s." % (
         datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         max_price, str(real_total)))
 
@@ -21,7 +21,7 @@ def sendNotification(real_total, max_price):
     client.messages.create(
         to=TO_NUMBER,
         from_=FROM_NUMBER,
-        body="[%s] Found a deal. Max Total: $%s. Current Total: $%s" % (
+        body="[%s] Found a deal. Max Total: %s. Current Total: %s" % (
             datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             max_price,
             str(real_total)))

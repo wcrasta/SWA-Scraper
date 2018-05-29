@@ -42,7 +42,7 @@ def parse():
     
     parser.add_argument(
         "--flightnum",
-        "-ft",
+        "-fn",
         type=str,
         help="Specific flight number to check if desired")
 

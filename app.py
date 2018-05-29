@@ -16,7 +16,7 @@ def main():
     elif args.no_text:
         from datetime import datetime
 
-        print("[%s] Found a deal. Max Total: $%s. Current Total: $%s." % (
+        print("[%s] Found a deal. Max Total: %s. Current Total: %s." % (
             datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             args.max_price, str(real_total)))
     else:
