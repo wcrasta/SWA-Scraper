@@ -1,1 +1,1 @@
-All code and history removed at the request of Southwest.
+All code and history removed from this Awesome Project at the request of Southwest.
